@@ -15,7 +15,7 @@ import java.util.List;
 
 @Service
 @AllArgsConstructor
-public class AsteroidService implements IAsteroidService {
+public class AsteroidServiceImpl implements IAsteroidService {
 
     private final INasaNeoClient nasaNeoClient;
     private final INasaCADClient nasaCADClient;
@@ -23,7 +23,7 @@ public class AsteroidService implements IAsteroidService {
     @Override
     public List<Asteroid> getTopClosestAsteroid(String startDate, String endDate) {
         final int CLOSEST_ASTEROID_LIMIT = 10;
-        List<Asteroid> asteroids = this.nasaNeoClient.findByDateRange(startDate,startDate);
+        List<Asteroid> asteroids = this.nasaNeoClient.findByDateRange(startDate,endDate);
 
         // Sort the asteroid based on distance to earth
         Collections.sort(asteroids, new Comparator<Asteroid>() {
@@ -34,6 +34,10 @@ public class AsteroidService implements IAsteroidService {
                 return distance1.getKilometers().compareTo(distance2.getKilometers());
             }
         });
+
+        if (asteroids.size() < CLOSEST_ASTEROID_LIMIT) {
+            return asteroids;
+        }
 
         return asteroids.subList(0, CLOSEST_ASTEROID_LIMIT);
     }
