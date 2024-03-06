@@ -1,10 +1,10 @@
 package org.example.nasarestapi.infrastructure.client.impl;
 
 import org.example.nasarestapi.app.model.Asteroid;
-import org.example.nasarestapi.infrastructure.client.mapper.NasaClientAsteroidMapper;
+import org.example.nasarestapi.infrastructure.client.mapper.NasaNeoFeedAsteroidMapper;
 import org.example.nasarestapi.infrastructure.client.schema.AsteroidSchema;
 import org.example.nasarestapi.infrastructure.client.schema.NasaNeoFeedSchema;
-import org.example.nasarestapi.infrastructure.client.spec.INasaClient;
+import org.example.nasarestapi.infrastructure.client.spec.INasaNeoClient;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
@@ -16,16 +16,16 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-public class NasaClientImpl implements INasaClient {
+public class NasaNeoClientImpl implements INasaNeoClient {
 
     private final String BASE_URL = "https://api.nasa.gov/neo/rest/v1/feed";
     @Value("${environment.nasa-api-key}")
     private String API_KEY;
     private final RestTemplate restTemplate = new RestTemplate();
-    private final NasaClientAsteroidMapper mapper;
+    private final NasaNeoFeedAsteroidMapper mapper;
 
     @Autowired
-    public NasaClientImpl(NasaClientAsteroidMapper mapper) {
+    public NasaNeoClientImpl(NasaNeoFeedAsteroidMapper mapper) {
         this.mapper = mapper;
     }
 

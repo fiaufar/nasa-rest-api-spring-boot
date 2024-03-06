@@ -3,6 +3,7 @@ package org.example.nasarestapi.presenter.api.v1.controller;
 import org.example.nasarestapi.app.model.Asteroid;
 import org.example.nasarestapi.app.service.spec.IAsteroidService;
 import org.example.nasarestapi.presenter.api.v1.dto.AsteroidPublicData;
+import org.example.nasarestapi.presenter.api.v1.dto.TotalClosestAsteroidPublicData;
 import org.example.nasarestapi.presenter.api.v1.mapper.AsteroidMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.math.BigInteger;
 import java.util.List;
 
 @RestController
@@ -36,5 +38,12 @@ public class AsteroidController {
                 .map(as -> mapper.toDto(as))
                 .toList()
                 , HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/total-closest", method = RequestMethod.GET)
+    public ResponseEntity<TotalClosestAsteroidPublicData> getTotalClosestAsteroid(@RequestParam(name = "distance") BigInteger distance) throws Throwable {
+        long totalAsteroids = this.asteroidService.getTotalClosestAsteroidByDistance(distance);
+
+        return new ResponseEntity<TotalClosestAsteroidPublicData>(new TotalClosestAsteroidPublicData(totalAsteroids), HttpStatus.OK);
     }
 }

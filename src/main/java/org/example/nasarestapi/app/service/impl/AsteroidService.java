@@ -4,9 +4,11 @@ import lombok.AllArgsConstructor;
 import org.example.nasarestapi.app.model.Asteroid;
 import org.example.nasarestapi.app.model.MissDistance;
 import org.example.nasarestapi.app.service.spec.IAsteroidService;
-import org.example.nasarestapi.infrastructure.client.spec.INasaClient;
+import org.example.nasarestapi.infrastructure.client.spec.INasaCADClient;
+import org.example.nasarestapi.infrastructure.client.spec.INasaNeoClient;
 import org.springframework.stereotype.Service;
 
+import java.math.BigInteger;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -15,12 +17,13 @@ import java.util.List;
 @AllArgsConstructor
 public class AsteroidService implements IAsteroidService {
 
-    private final INasaClient nasaClient;
+    private final INasaNeoClient nasaNeoClient;
+    private final INasaCADClient nasaCADClient;
 
     @Override
     public List<Asteroid> getTopClosestAsteroid(String startDate, String endDate) {
         final int CLOSEST_ASTEROID_LIMIT = 10;
-        List<Asteroid> asteroids = this.nasaClient.findByDateRange(startDate,startDate);
+        List<Asteroid> asteroids = this.nasaNeoClient.findByDateRange(startDate,startDate);
 
         // Sort the asteroid based on distance to earth
         Collections.sort(asteroids, new Comparator<Asteroid>() {
@@ -33,5 +36,11 @@ public class AsteroidService implements IAsteroidService {
         });
 
         return asteroids.subList(0, CLOSEST_ASTEROID_LIMIT);
+    }
+
+    @Override
+    public long getTotalClosestAsteroidByDistance(BigInteger kilometers) {
+        long totalAsteroid = this.nasaCADClient.countClosestAsteroidByDistance(kilometers);
+        return totalAsteroid;
     }
 }
