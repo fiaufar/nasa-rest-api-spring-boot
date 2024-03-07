@@ -5,12 +5,25 @@ service is provided some REST APIs to get the Asteroid data from API NASA (https
 The APIs has been adjusted based on requirements. I'm implemented a Clean Architecture
 to structure the code.
 
+## Technology & Depedency:
+- Maven v3.9.6
+- Java version: 21.0.2
+- Spring Boot v3.2.3
+- Docker compose v2.15.1
+- Lombok
+- JUnit v5.10.2
+- AssertJ
+- Mockito
+- Mapstruct v1.6.0
+
 ## How to run the project:
 You can run the project using docker-compose. 
 - First open the terminal and go to the project directory, and then run the command below:
-<pre><code>
-docker-compose up
-</code></pre>
+<pre>
+  <code>
+    docker-compose up
+  </code>
+</pre>
 - After successfully run, you can access the service to http://localhost:8080/api/v1/asteroid
 
 # APIs
